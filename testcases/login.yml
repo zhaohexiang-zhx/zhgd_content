@@ -1,0 +1,48 @@
+config:
+    name: testcase description
+    variables: 
+        timestamp: ${get_timestamp()}
+    verify: False
+    export:
+      - get_token
+teststeps:
+-   name: login system
+    request:
+        data:
+            _sign: bd49d5b78c71d2268c181e9c70ba9233
+            _timestamp: '1596009876000'
+            loginName: ceshi_admin
+            password: 72732414d750775c1eb0b5b915b3561b
+            terminal: pc
+            token: ''
+            v: ''
+        headers:
+            Content-Type: application/x-www-form-urlencoded;charset=UTF-8
+            User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36
+                (KHTML, like Gecko) Chrome/84.0.4147.89 Safari/537.36
+        method: POST
+        url: http://10.23.190.107/zhgd_mms/user/login
+    validate:
+        - eq: [status_code, 200]
+        - eq: [headers.Content-Type, application/json]
+        - eq: [content.code, 200]
+    extract:
+        get_token: content.results.data.token
+
+-   name: get applist
+    request:
+        headers:
+            User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36
+                (KHTML, like Gecko) Chrome/84.0.4147.89 Safari/537.36
+        method: GET
+        params:
+            _sign: 8eb0038c835007f8718750abe5282549
+            _timestamp: '1596009879000'
+            terminal: pc
+            token: ${get_token}
+            v: ''
+        url: http://10.23.190.107/zhgd_mms/news/getAppList
+    validate:
+        - eq: [status_code, 200]
+        - eq: [headers.Content-Type, application/json]
+        - eq: [content.code, 200]

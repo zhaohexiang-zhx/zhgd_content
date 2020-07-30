@@ -1,0 +1,241 @@
+config:
+    name: testcase description
+    variables: 
+        timestamp: ${get_timestamp()}
+    verify: False
+teststeps:
+-   name: login system
+    request:
+        data:
+            _sign: bd49d5b78c71d2268c181e9c70ba9233
+            _timestamp: '1596009876000'
+            loginName: ceshi_admin
+            password: 72732414d750775c1eb0b5b915b3561b
+            terminal: pc
+            token: ''
+            v: ''
+        headers:
+            Content-Type: application/x-www-form-urlencoded;charset=UTF-8
+            User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36
+                (KHTML, like Gecko) Chrome/84.0.4147.89 Safari/537.36
+        method: POST
+        url: http://10.23.190.107/zhgd_mms/user/login
+    validate:
+        - eq: [status_code, 200]
+        - eq: [headers.Content-Type, application/json]
+        - eq: [content.code, 200]
+    extract:
+        get_token: content.results.data.token
+
+-   name: get applist
+    request:
+        headers:
+            User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36
+                (KHTML, like Gecko) Chrome/84.0.4147.89 Safari/537.36
+        method: GET
+        params:
+            _sign: 8eb0038c835007f8718750abe5282549
+            _timestamp: '1596009879000'
+            terminal: pc
+            token: ${get_token}
+            v: ''
+        url: http://10.23.190.107/zhgd_mms/news/getAppList
+    validate:
+        - eq: [status_code, 200]
+        - eq: [headers.Content-Type, application/json]
+        - eq: [content.code, 200]
+
+-   name: get classifylist
+    request:
+        headers:
+            User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36
+                (KHTML, like Gecko) Chrome/84.0.4147.89 Safari/537.36
+        method: GET
+        params:
+            _sign: 7a10c2391936ee4b16df7dcd69392743
+            _timestamp: '1596009879000'
+            terminal: pc
+            token: ${get_token}
+            v: ''
+        url: http://10.23.190.107/zhgd_mms/news/getClassfiyList
+    validate:
+        - eq: [status_code, 200]
+        - eq: [headers.Content-Type, application/json]
+        - eq: [content.code, 200]
+
+-   name: get newslist
+    request:
+        headers:
+            User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36
+                (KHTML, like Gecko) Chrome/84.0.4147.89 Safari/537.36
+        method: GET
+        params:
+            _sign: f098339de0ff26df6bd35bc353eab2e0
+            _timestamp: '1596009879000'
+            clientType: '0'
+            offset: '1'
+            pageSize: '10'
+            terminal: pc
+            token: ${get_token}
+            v: ''
+        url: http://10.23.190.107/zhgd_mms/news/getNewsList
+    validate:
+        - eq: [status_code, 200]
+        - eq: [headers.Content-Type, application/json]
+        - eq: [content.code, 200]
+
+-   name: /zhgd_mms/news/getClassfiyList
+    request:
+        headers:
+            User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36
+                (KHTML, like Gecko) Chrome/84.0.4147.89 Safari/537.36
+        method: GET
+        params:
+            _sign: ccfc18eddce780c6a000ddf89e8a1716
+            _timestamp: '1596009882000'
+            operation: add
+            terminal: pc
+            token: ${get_token}
+            v: ''
+        url: http://10.23.190.107/zhgd_mms/news/getClassfiyList
+    validate:
+        - eq: [status_code, 200]
+        - eq: [headers.Content-Type, application/json]
+        - eq: [content.code, 200]
+
+-   name: save news
+    request:
+        data:
+            _sign: 5fb43feecf0846194cc4d30788b476f6
+            _timestamp: '1596009911000'
+            classifyKeys[0]: 70242d3f5ee2470fbc8477fe7876eebb
+            classifyKeys[1]: 1c579dd08e3a4d16ac69f97c8139ca7c
+            content: <p>内容_${timestamp}</p>
+            jsonArr: '[{"nrImg":"","nrImgUrl":"","nrTitle":""},{"nrImg":"","nrImgUrl":"","nrTitle":""}]'
+            newsTag: 后台用户
+            newsTitle: 标题_${timestamp}
+            status: '0'
+            styleType: '1'
+            terminal: pc
+            token: ${get_token}
+            v: ''
+        headers:
+            Content-Type: application/x-www-form-urlencoded;charset=UTF-8
+            User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36
+                (KHTML, like Gecko) Chrome/84.0.4147.89 Safari/537.36
+        method: POST
+        url: http://10.23.190.107/zhgd_mms/news/save_news
+    validate:
+        - eq: [status_code, 200]
+        - eq: [headers.Content-Type, application/json]
+        - eq: [content.code, 200]
+
+-   name: get newslist
+    request:
+        headers:
+            User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36
+                (KHTML, like Gecko) Chrome/84.0.4147.89 Safari/537.36
+        method: GET
+        params:
+            _sign: b681e21764d089473245979dd6361d44
+            _timestamp: '1596009912000'
+            appInformationKey: ''
+            clientType: '0'
+            newsTitle: ''
+            offset: '1'
+            pageSize: '10'
+            terminal: pc
+            token: ${get_token}
+            v: ''
+        url: http://10.23.190.107/zhgd_mms/news/getNewsList
+    validate:
+        - eq: [status_code, 200]
+        - eq: [headers.Content-Type, application/json]
+        - eq: [content.code, 200]
+
+-   name: get draftsClassfiyList
+    request:
+        headers:
+            User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36
+                (KHTML, like Gecko) Chrome/84.0.4147.89 Safari/537.36
+        method: GET
+        params:
+            _sign: bb8991404325b3110f99b63c4792787e
+            _timestamp: '1596009927000'
+            terminal: pc
+            token: ${get_token}
+            v: ''
+        url: http://10.23.190.107/zhgd_mms/news/getClassfiyList
+    validate:
+        - eq: [status_code, 200]
+        - eq: [headers.Content-Type, application/json]
+        - eq: [content.code, 200]
+
+-   name: get draftsList
+    request:
+        headers:
+            User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36
+                (KHTML, like Gecko) Chrome/84.0.4147.89 Safari/537.36
+        method: GET
+        params:
+            _sign: 859a921433a2a50dbe4196c29a7f50de
+            _timestamp: '1596009927000'
+            clientType: '0'
+            offset: '1'
+            pageSize: '10'
+            status: '0'
+            terminal: pc
+            token: ${get_token}
+            v: ''
+        url: http://10.23.190.107/zhgd_mms/news/getNewsList
+    validate:
+        - eq: [status_code, 200]
+        - eq: [headers.Content-Type, application/json]
+        - eq: [content.code, 200]
+    extract:
+        update_newskey: content.results.data.0.newsKey
+
+-   name: update newsStatus
+    request:
+        data:
+            _sign: dd47e7caa8dc09f29b5e6c21429aa7d6
+            _timestamp: '1596009930000'
+            newsKey: ${update_newskey}
+            status: '1'
+            terminal: pc
+            token: ${get_token}
+            v: ''
+        headers:
+            Content-Type: application/x-www-form-urlencoded;charset=UTF-8
+            User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36
+                (KHTML, like Gecko) Chrome/84.0.4147.89 Safari/537.36
+        method: POST
+        url: http://10.23.190.107/zhgd_mms/news/updateStatus
+    validate:
+        - eq: [status_code, 200]
+        - eq: [headers.Content-Type, application/json]
+        - eq: [content.code, 200]
+
+-   name: /zhgd_mms/news/getNewsList
+    request:
+        headers:
+            User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36
+                (KHTML, like Gecko) Chrome/84.0.4147.89 Safari/537.36
+        method: GET
+        params:
+            _sign: 741dddd524ef35b57496db30f0a749df
+            _timestamp: '1596009930000'
+            appInformationKey: ''
+            clientType: '0'
+            newsTitle: ''
+            offset: '1'
+            pageSize: '10'
+            status: '0'
+            terminal: pc
+            token: ${get_token}
+            v: ''
+        url: http://10.23.190.107/zhgd_mms/news/getNewsList
+    validate:
+        - eq: [status_code, 200]
+        - eq: [headers.Content-Type, application/json]
+        - eq: [content.code, 200]

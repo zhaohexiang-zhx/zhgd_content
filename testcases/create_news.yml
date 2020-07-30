@@ -1,0 +1,60 @@
+config:
+    name: testcase description
+    variables: 
+        timestamp: ${get_timestamp()}
+    verify: False
+
+teststeps:
+-   name: login
+    testcase: testcases/login.yml
+    extract:
+        - get_token
+-   name: save news
+    request:
+        data:
+            _sign: 5fb43feecf0846194cc4d30788b476f6
+            _timestamp: '1596009911000'
+            classifyKeys[0]: 70242d3f5ee2470fbc8477fe7876eebb
+            classifyKeys[1]: 1c579dd08e3a4d16ac69f97c8139ca7c
+            content: <p>内容_${timestamp}</p>
+            jsonArr: '[{"nrImg":"","nrImgUrl":"","nrTitle":""},{"nrImg":"","nrImgUrl":"","nrTitle":""}]'
+            newsTag: 后台用户
+            newsTitle: 标题_${timestamp}
+            status: '0'
+            styleType: '1'
+            terminal: pc
+            token: ${get_token}
+            v: ''
+        headers:
+            Content-Type: application/x-www-form-urlencoded;charset=UTF-8
+            User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36
+                (KHTML, like Gecko) Chrome/84.0.4147.89 Safari/537.36
+        method: POST
+        url: http://10.23.190.107/zhgd_mms/news/save_news
+    validate:
+        - eq: [status_code, 200]
+        - eq: [headers.Content-Type, application/json]
+        - eq: [content.code, 200]
+
+-   name: /zhgd_mms/news/getNewsList
+    request:
+        headers:
+            User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36
+                (KHTML, like Gecko) Chrome/84.0.4147.89 Safari/537.36
+        method: GET
+        params:
+            _sign: b681e21764d089473245979dd6361d44
+            _timestamp: '1596009912000'
+            appInformationKey: ''
+            clientType: '0'
+            newsTitle: ''
+            offset: '1'
+            pageSize: '10'
+            terminal: pc
+            token: ${get_token}
+            v: ''
+        url: http://10.23.190.107/zhgd_mms/news/getNewsList
+    validate:
+        - eq: [status_code, 200]
+        - eq: [headers.Content-Type, application/json]
+        - eq: [content.code, 200]

@@ -1,0 +1,49 @@
+config:
+    name: testcase description
+    variables: 
+        timestamp: ${get_timestamp()}
+    verify: False
+teststeps:
+-   name: login
+    testcase: testcases/login.yml
+    extract:
+      - get_token
+
+-   name: get classifylist
+    request:
+        headers:
+            User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36
+                (KHTML, like Gecko) Chrome/84.0.4147.89 Safari/537.36
+        method: GET
+        params:
+            _sign: 7a10c2391936ee4b16df7dcd69392743
+            _timestamp: '1596009879000'
+            terminal: pc
+            token: ${get_token}
+            v: ''
+        url: http://10.23.190.107/zhgd_mms/news/getClassfiyList
+    validate:
+        - eq: [status_code, 200]
+        - eq: [headers.Content-Type, application/json]
+        - eq: [content.code, 200]
+
+-   name: get newslist
+    request:
+        headers:
+            User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36
+                (KHTML, like Gecko) Chrome/84.0.4147.89 Safari/537.36
+        method: GET
+        params:
+            _sign: f098339de0ff26df6bd35bc353eab2e0
+            _timestamp: '1596009879000'
+            clientType: '0'
+            offset: '1'
+            pageSize: '10'
+            terminal: pc
+            token: ${get_token}
+            v: ''
+        url: http://10.23.190.107/zhgd_mms/news/getNewsList
+    validate:
+        - eq: [status_code, 200]
+        - eq: [headers.Content-Type, application/json]
+        - eq: [content.code, 200]

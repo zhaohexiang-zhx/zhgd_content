@@ -1,0 +1,59 @@
+config:
+    name: testcase description
+    variables: 
+        # debugtalk中定义函数
+        timestamp: ${get_timestamp()}
+    verify: False
+teststeps:
+-   name: login
+    testcase: testcases/login.yml
+    # login中export
+    extract:
+        - get_token
+-   name: get draftslist
+    request:
+        headers:
+            User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36
+                (KHTML, like Gecko) Chrome/84.0.4147.89 Safari/537.36
+        method: GET
+        params:
+            _sign: 741dddd524ef35b57496db30f0a749df
+            _timestamp: '1596009930000'
+            appInformationKey: ''
+            clientType: '0'
+            newsTitle: ''
+            offset: '1'
+            pageSize: '10'
+            # 内容状态为0存草稿箱
+            status: '0'
+            terminal: pc
+            token: ${get_token}
+            v: ''
+        url: http://10.23.190.107/zhgd_mms/news/getNewsList
+    validate:
+        - eq: [status_code, 200]
+        - eq: [headers.Content-Type, application/json]
+        - eq: [content.code, 200]
+    extract:
+        update_newskey: content.results.data.0.newsKey
+-   name: update newsStatus
+    request:
+        data:
+            _sign: dd47e7caa8dc09f29b5e6c21429aa7d6
+            _timestamp: '1596009930000'
+            newsKey: ${update_newskey}
+            status: '1'
+            terminal: pc
+            token: ${get_token}
+            v: ''
+        headers:
+            Content-Type: application/x-www-form-urlencoded;charset=UTF-8
+            User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36
+                (KHTML, like Gecko) Chrome/84.0.4147.89 Safari/537.36
+        method: POST
+        url: http://10.23.190.107/zhgd_mms/news/updateStatus
+    validate:
+        - eq: [status_code, 200]
+        - eq: [headers.Content-Type, application/json]
+        - eq: [content.code, 200]
+
