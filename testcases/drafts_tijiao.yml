@@ -1,5 +1,5 @@
 config:
-    name: testcase description
+    name: 草稿箱-提交
     variables: 
         # debugtalk中定义函数
         timestamp: ${get_timestamp()}

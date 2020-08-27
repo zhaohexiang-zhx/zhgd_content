@@ -1,0 +1,67 @@
+config:
+    name: 新建二级分类
+    variables:
+        name_timestamp: ${get_timestamp1()}
+    verify: False
+teststeps:
+-   name: login
+    testcase: testcases/login.yml
+    extract:
+        - get_token
+-   name: 保存分类
+    request:
+        data:
+            _sign: f9cd8eef5260681c03b4addbd5272c3d
+            _timestamp: '1598506658000'
+            classifyName: ${classifyName}
+            level: '2'
+            parentKey: 82a2b896bc634bd2a0228f18d641d57d
+            status: '0'
+            terminal: pc
+            token: ${get_token}
+            v: ''
+        headers:
+            Content-Type: application/x-www-form-urlencoded;charset=UTF-8
+            User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36
+                (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36
+        method: POST
+        url: http://10.23.190.107/zhgd_mms/classify/saveClassify
+    validate:
+    -   eq:
+        - status_code
+        - 200
+    -   eq:
+        - headers.Content-Type
+        - application/json
+    -   eq:
+        - content.code
+        - 200
+-   name: 获取分类列表
+    request:
+        headers:
+            User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36
+                (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36
+        method: GET
+        params:
+            _sign: 0dbc11620ea925f5deb2164d3e3eebee
+            _timestamp: '1598506658000'
+            classifyName: ''
+            clientType: '0'
+            level: '2'
+            offset: '1'
+            pageSize: '10'
+            parentKey: 82a2b896bc634bd2a0228f18d641d57d
+            terminal: pc
+            token: ${get_token}
+            v: ''
+        url: http://10.23.190.107/zhgd_mms/classify/getClassifyList
+    validate:
+    -   eq:
+        - status_code
+        - 200
+    -   eq:
+        - headers.Content-Type
+        - application/json
+    -   eq:
+        - content.code
+        - 200
