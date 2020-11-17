@@ -5,11 +5,11 @@ config:
     verify: False
 
 teststeps:
--   name: login
+-   name: 调用测试用例“登录”，获取token
     testcase: testcases/login.yml
     extract:
         - get_token
--   name: save news
+-   name: 填写各项参数，并提交保存
     request:
         data:
             _sign: 5fb43feecf0846194cc4d30788b476f6
@@ -36,7 +36,7 @@ teststeps:
         - eq: [headers.Content-Type, application/json]
         - eq: [content.code, 200]
 
--   name: /zhgd_mms/news/getNewsList
+-   name: 保存成功，跳转内容列表，验证是否生成内容
     request:
         headers:
             User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36
